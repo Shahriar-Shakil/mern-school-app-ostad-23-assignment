@@ -5,7 +5,6 @@ import AuthMiddleware from "../app/middlewares/AuthMiddleware.js";
 const router = express.Router();
 
 router.post("/login", StudentController.Login);
-router.post("/VerifyLogin", StudentController.VerifyLogin);
 router.post("/register", StudentController.CreateStudentProfile);
 router.post(
   "/updateStudentProfile",

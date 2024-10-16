@@ -2,16 +2,11 @@ import {
   CreateStudentProfileService,
   loginStudentService,
   ReadStudentProfileService,
-  VerifyLoginService,
+  UpdateStudentProfileService,
 } from "../service/studentService.js";
 
 export const Login = async (req, res) => {
   let result = await loginStudentService(req);
-  return res.json(result);
-};
-
-export const VerifyLogin = async (req, res) => {
-  let result = await VerifyLoginService(req);
   return res.json(result);
 };
 
@@ -21,8 +16,8 @@ export const CreateStudentProfile = async (req, res) => {
 };
 
 export const UpdateStudentProfile = async (req, res) => {
-  // let result = await UpdateUserProfileService(req);
-  // return res.json(result);
+  let result = await UpdateStudentProfileService(req);
+  return res.json(result);
 };
 
 export const ReadStudentProfile = async (req, res) => {
