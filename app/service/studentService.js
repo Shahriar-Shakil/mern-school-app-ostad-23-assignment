@@ -1,8 +1,9 @@
 import bcrypt from "bcrypt";
+import { JWT_EXPIRE_TIME, JWT_KEY } from "../config/config.js";
 import Student from "../model/student.js";
-import { TokenEncode } from "../utility/tokenUtility.js";
+import { TokenDecode, TokenEncode } from "../utility/tokenUtility.js";
 
-export const loginStudentService = async (req) => {
+export const loginStudentService = async (req, res) => {
   try {
     const { email, password } = req.body;
 
@@ -21,18 +22,37 @@ export const loginStudentService = async (req) => {
     // Generate JWT token
     const token = TokenEncode(student.email, student._id);
 
-    // Return success with token
-    return {
-      success: true,
-      message: "Login successful",
-      token, // Return JWT token
-    };
+    const expiresIn = JWT_EXPIRE_TIME * 1000; // Convert seconds to milliseconds
+
+    res.cookie("token", token, {
+      httpOnly: true, // Prevents JavaScript access
+      secure: process.env.NODE_ENV === "production", // Use true in production
+      maxAge: expiresIn, // Set cookie expiration time to match token expiration
+    }); // Set the cookie
+    return res.status(200).json({ message: "Login successful" });
   } catch (error) {
     console.error("Error during login:", error);
     return { success: false, message: "An error occurred during login" };
   }
 };
+export const VerifyLoginService = (token) => {
+  try {
+    const decoded = TokenDecode(token);
 
+    if (!decoded) {
+      return { status: "fail", message: "Invalid token" };
+    }
+
+    // If token is valid, return the decoded data
+    return {
+      status: "success",
+      message: "Token is valid",
+      data: decoded,
+    };
+  } catch (error) {
+    return { status: "fail", message: "Error verifying token" };
+  }
+};
 export const CreateStudentProfileService = async (req) => {
   try {
     const { name, email, password, profilePicture } = req.body;

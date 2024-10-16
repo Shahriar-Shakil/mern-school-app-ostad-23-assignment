@@ -7,6 +7,8 @@ import upload from "../app/utility/multerUtility.js"; // Import the multer utili
 const router = express.Router();
 
 router.post("/login", StudentController.Login);
+router.post("/VerifyLogin", StudentController.VerifyLogin);
+
 router.post("/register", StudentController.CreateStudentProfile);
 router.post(
   "/updateStudentProfile",

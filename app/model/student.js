@@ -1,3 +1,4 @@
+import bcrypt from "bcrypt";
 import mongoose from "mongoose";
 
 const { Schema } = mongoose;
@@ -32,7 +33,9 @@ studentSchema.pre("save", function (next) {
   this.updatedAt = Date.now();
   next();
 });
-
+studentSchema.methods.comparePassword = async function (password) {
+  return await bcrypt.compare(password, this.password);
+};
 const Student = mongoose.model("Student", studentSchema);
 
 export default Student;
