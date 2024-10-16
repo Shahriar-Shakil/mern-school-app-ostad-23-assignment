@@ -48,3 +48,26 @@ export const ReadFileService = async (req, res) => {
     return { status: "fail", message: "Error reading file" };
   }
 };
+export const DeleteFileService = async (req) => {
+  try {
+    // Get the filename from the request params
+    const filename = req.params.filename;
+
+    // Define the file path (assuming files are stored in the 'uploads/' directory)
+    const filePath = path.join(process.cwd(), "uploads", filename);
+
+    // Check if the file exists
+    if (!fs.existsSync(filePath)) {
+      return { status: "fail", message: "File not found" };
+    }
+
+    // Delete the file
+    fs.unlinkSync(filePath);
+
+    return { status: "success", message: "File deleted successfully" };
+  } catch (error) {
+    // Handle any error during file deletion
+    console.error("Error deleting file:", error);
+    return { status: "fail", message: "Error deleting file" };
+  }
+};

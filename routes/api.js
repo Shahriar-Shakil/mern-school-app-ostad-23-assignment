@@ -19,7 +19,6 @@ router.get(
   StudentController.ReadStudentProfile
 );
 
-// file upload api
 // File Upload API
 router.post(
   "/uploadFile",
@@ -28,5 +27,9 @@ router.post(
   FileController.UploadFile
 );
 router.get("/readFile/:filename", AuthMiddleware, FileController.ReadFile);
-
+router.delete(
+  "/deleteFile/:filename",
+  AuthMiddleware,
+  FileController.DeleteFile
+);
 export default router;
