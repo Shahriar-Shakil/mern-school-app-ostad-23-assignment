@@ -27,4 +27,6 @@ router.post(
   upload.single("file"), // Single file upload
   FileController.UploadFile
 );
+router.get("/readFile/:filename", AuthMiddleware, FileController.ReadFile);
+
 export default router;

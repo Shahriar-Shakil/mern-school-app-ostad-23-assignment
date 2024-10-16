@@ -1,3 +1,6 @@
+import fs from "fs";
+import path from "path";
+
 export const UploadFileService = async (req) => {
   try {
     // Check if file is uploaded
@@ -23,5 +26,25 @@ export const UploadFileService = async (req) => {
       status: "fail",
       message: "Something went wrong during file upload",
     };
+  }
+};
+
+export const ReadFileService = async (req, res) => {
+  try {
+    // Get filename from request params
+    const filename = req.params.filename;
+
+    // Define the file path (assumes files are stored in 'uploads/' directory)
+    const filePath = path.join(process.cwd(), "uploads", filename);
+
+    // Check if the file exists
+    if (!fs.existsSync(filePath)) {
+      return { status: "fail", message: "File not found" };
+    }
+
+    // Send the file as a response
+    return res.sendFile(filePath);
+  } catch (error) {
+    return { status: "fail", message: "Error reading file" };
   }
 };

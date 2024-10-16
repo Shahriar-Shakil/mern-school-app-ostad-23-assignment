@@ -7,8 +7,10 @@ const storage = multer.diskStorage({
     cb(null, "uploads/"); // Set the destination folder for uploaded files
   },
   filename: function (req, file, cb) {
-    // Create a unique filename using the current timestamp
-    cb(null, Date.now() + "-" + file.originalname);
+    // Replace spaces with hyphens in the original file name
+    const originalName = file.originalname.replace(/\s+/g, "-");
+    // Create a unique filename using the current timestamp and the modified file name
+    cb(null, Date.now() + "-" + originalName);
   },
 });
 
